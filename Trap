@@ -1,0 +1,123 @@
+package com.example.mycrudservice.converter;
+
+import java.util.*;
+
+public class Pasha {
+    
+    public static int countOccurance(List<String> list, String target) {
+        int count = 0;
+        for (String str : list) {
+            if (str.equals(target)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static <T> List<T> toList(T[] array) {
+        return Arrays.asList(array);
+    }
+
+    public static List<Integer> findUnique(List<Integer> list) {
+        Set<Integer> uniqueSet = new HashSet<>(list);
+        return new ArrayList<>(uniqueSet);
+    }
+
+    public static void calcOccurance(List<String> list) {
+        Map<String, Integer> frequencyMap = new HashMap<>();
+        for (String word : list) {
+            frequencyMap.put(word, frequencyMap.getOrDefault(word, 0) + 1);
+        }
+        for (Map.Entry<String, Integer> entry : frequencyMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    public static List<Map<String, Object>> findOccurance(List<String> list) {
+        Map<String, Integer> frequencyMap = new HashMap<>();
+        for (String word : list) {
+            frequencyMap.put(word, frequencyMap.getOrDefault(word, 0) + 1);
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : frequencyMap.entrySet()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", entry.getKey());
+            map.put("occurrence", entry.getValue());
+            result.add(map);
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        // Приклад використання
+        List<String> words = Arrays.asList("bird", "fox", "cat", "bird", "bird", "fox", "dog", "cat");
+        System.out.println("Occurrences of 'bird': " + countOccurance(words, "bird"));
+
+        Integer[] array = {1, 2, 3};
+        List<Integer> list = toList(array);
+        System.out.println("List after conversion: " + list);
+
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 1, 2, 4, 5, 3, 6);
+        List<Integer> uniqueNumbers = findUnique(numbers);
+        System.out.println("Unique numbers: " + uniqueNumbers);
+
+        calcOccurance(words);
+
+        List<Map<String, Object>> occurrenceList = findOccurance(words);
+        System.out.println("Occurrences: " + occurrenceList);
+    }
+
+
+}
+
+class Record {
+    private String name;
+    private List<String> phones;
+
+    public Record(String name) {
+        this.name = name;
+        this.phones = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getPhones() {
+        return phones;
+    }
+
+    public void addPhone(String phone) {
+        phones.add(phone);
+    }
+}
+
+ class Phonebook {
+    private List<Record> records;
+
+    public Phonebook() {
+        this.records = new ArrayList<>();
+    }
+
+    public void add(String name, String phone) {
+        for (Record record : records) {
+            if (record.getName().equals(name)) {
+                record.addPhone(phone);
+                return;
+            }
+        }
+        Record newRecord = new Record(name);
+        newRecord.addPhone(phone);
+        records.add(newRecord);
+    }
+
+    public String find(String name) {
+        for (Record record : records) {
+            if (record.getName().equals(name)) {
+                return record.getPhones().get(0); 
+            }
+        }
+        return null;
+    }
+}
+
